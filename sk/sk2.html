@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <title>SK.</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="sk2.css">
+</head>
+<body>
+  <div class="card">
+  <div class="interactive-tilt">
+    <div class="profile-wrapper">
+      <h1>SK</h1>
+      <img class="avatar" src="dwdw.png" alt="Profile" />
+      <p>i love her</p>
+
+      <div class="audio-wrapper">
+        <div class="custom-audio">
+          <button id="playPause">
+            <i class="fa-solid fa-play"></i>
+          </button>
+          <span id="currentTime">0:00</span>
+          <input type="range" id="seekBar" value="0">
+          <span id="duration">2:50</span>
+          <audio id="audio" src="audio/[FREE FOR PROFIT] Jerk + Hoodtrap + Sample - void in blue.mp3"></audio>
+        </div>
+      </div>
+
+      <div class="socials">
+        <h2>Socials</h2>
+        <p class="subtitle">Erick "aspas" Santos (born June 15, 2003) is a Brazilian player who is currently playing for MIBR.</p>
+        <div class="social-icons">
+          <a href="https://www.instagram.com/xamukkjj/">
+            <img src="1104d6c372b3fd0f7550aee9238180d5-removebg-preview.png" alt="Instagram">
+          </a>
+          <a href="https://discord.com/users/xamukkjj">
+            <img src="imagem_2025-04-12_125020964-removebg-preview.png" alt="Discord">
+          </a>
+          <a href="https://open.spotify.com/user/1sieIpykLy3jinztelItcqh?si=e02d0320fc34583f">
+            <img src="kisspng-wi-fi-wireless-spotify-logo-5b2a65dc2361e5.7707732115295052441449-removebg-preview.png" alt="Spotify">
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  <script>
+    const tiltWrapper = document.querySelector('.interactive-tilt');
+    const card = document.querySelector('.profile-wrapper');
+
+    tiltWrapper.addEventListener('mousemove', (e) => {
+      const rect = tiltWrapper.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
+
+      const rotateX = (-y / 25).toFixed(2);
+      const rotateY = (x / 25).toFixed(2);
+
+      card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+    });
+
+    tiltWrapper.addEventListener('mouseleave', () => {
+      card.style.transform = 'rotateX(0) rotateY(0)';
+    });
+    const audio = document.getElementById('audio');
+    const playPause = document.getElementById('playPause');
+    const icon = playPause.querySelector('i');
+    const seekBar = document.getElementById('seekBar');
+    const currentTime = document.getElementById('currentTime');
+    const duration = document.getElementById('duration');
+
+    playPause.addEventListener('click', () => {
+      if (audio.paused) {
+        audio.play();
+        icon.classList.remove('fa-play');
+        icon.classList.add('fa-pause');
+      } else {
+        audio.pause();
+        icon.classList.remove('fa-pause');
+        icon.classList.add('fa-play');
+      }
+    });
+
+    audio.addEventListener('loadedmetadata', () => {
+      seekBar.max = audio.duration;
+      duration.textContent = formatTime(audio.duration);
+    });
+
+    audio.addEventListener('timeupdate', () => {
+      seekBar.value = audio.currentTime;
+      currentTime.textContent = formatTime(audio.currentTime);
+    });
+
+    seekBar.addEventListener('input', () => {
+      audio.currentTime = seekBar.value;
+    });
+
+    function formatTime(seconds) {
+      const min = Math.floor(seconds / 60);
+      const sec = Math.floor(seconds % 60);
+      return `${min}:${sec < 10 ? '0' + sec : sec}`;
+    }
+
+  </script>
+</body>
+</html>
